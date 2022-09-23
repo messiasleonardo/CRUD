@@ -20,19 +20,20 @@
                 <div class="modal-body">
                     <div class="col-md-3">
                         <label class="col-form-label">Type current password</label>
-                        <input id="senhaAtual" onblur="ValidarSenha()" />
+                        <input id="senhaAtual" onblur="ValidarSenha()" type="password"/>
                         <label id="infoSenha"></label>
                     </div>
                     <div class="col-md-3">
                         <label class="col-form-label">New password</label>
-                        <input />
+                        <input onblur="PassowrdCorrelation()" id="passowrdFirst" type="password" />
                     </div>
                     <div class="col-md-3">
                         <label class="col-form-label">Confirm new password</label>
-                        <input />
+                        <input onblur="PassowrdCorrelation()" id="passowrdConfirm" type="password" />
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <label id="infoPass"></label>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Save changes</button>
                 </div>
@@ -51,15 +52,30 @@
                 dataType: "html",
                 data: { senha: senhaAtual },
                 success: function (data) {
-                    if (data == "Correct Passoword!"){
+                    if (data == "Correct Passoword!") {
                         document.getElementById("infoSenha").style.color = "#00FF00";
                     }
-                    else{
+                    else {
                         document.getElementById("infoSenha").style.color = "#ff0000";
                     }
                     document.getElementById("infoSenha").innerHTML = data;
                 }
             });
+        }
+    </script>
+    <script>
+        function PassowrdCorrelation() {
+            let passFirst = document.getElementById("passowrdFirst").value;
+            let passConfirm = document.getElementById("passowrdConfirm").value;
+
+            if (passFirst == passConfirm) {
+                document.getElementById("infoPass").style.color = "#00FF00";
+                document.getElementById("infoPass").innerHTML = "Correct!";
+            }
+            else{
+                document.getElementById("infoPass").style.color = "#ff0000";
+                document.getElementById("infoPass").innerHTML = "Incorrect!";
+            }
         }
     </script>
 }
