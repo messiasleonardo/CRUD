@@ -1,0 +1,65 @@
+﻿@model TestingNewFeatures.ViewModels.HomeViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Login
+</button>
+
+<!-- Modal -->
+<form asp-action="AlterarSenha">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Test password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-md-3">
+                        <label class="col-form-label">Type current password</label>
+                        <input id="senhaAtual" onblur="ValidarSenha()" />
+                        <label id="infoSenha"></label>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="col-form-label">New password</label>
+                        <input />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="col-form-label">Confirm new password</label>
+                        <input />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <script>
+        function ValidarSenha() {
+            let senhaAtual = document.getElementById("senhaAtual").value;
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ValidarSenha", "Home")',
+                dataType: "html",
+                data: { senha: senhaAtual },
+                success: function (data) {
+                    if (data == "Correct Passoword!"){
+                        document.getElementById("infoSenha").style.color = "#00FF00";
+                    }
+                    else{
+                        document.getElementById("infoSenha").style.color = "#ff0000";
+                    }
+                    document.getElementById("infoSenha").innerHTML = data;
+                }
+            });
+        }
+    </script>
+}
