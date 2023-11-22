@@ -1,10 +1,10 @@
-name: .NET Core CI/CD
+name: CI/CD with Pull Requests
 
 on:
   push:
-    branches: [ master ]
+    branches: [ feature/*, develop, release/*, master ]
   pull_request:
-    branches: [ master ]
+    branches: [ develop, release/*, master ]
 
 jobs:
   build:
@@ -30,3 +30,27 @@ jobs:
 
     - name: Publish
       run: dotnet publish --configuration Release --no-build
+
+    - name: Create Pull Request to Develop
+      if: github.ref == 'refs/heads/feature/*'
+      uses: repo-sync/pull-request@v2
+      with:
+        destination_branch: "develop"
+        pr_title: "Pull request from feature to develop"
+        pr_body: "This is an automated pull request."
+
+    - name: Create Pull Request to Release
+      if: github.ref == 'refs/heads/develop'
+      uses: repo-sync/pull-request@v2
+      with:
+        destination_branch: "release/${{ github.run_number }}"
+        pr_title: "Pull request from develop to release"
+        pr_body: "This is an automated pull request."
+
+    - name: Create Pull Request to Master
+      if: github.ref == 'refs/heads/release/*'
+      uses: repo-sync/pull-request@v2
+      with:
+        destination_branch: "master"
+        pr_title: "Pull request from release to master"
+        pr_body: "This is an automated pull request."
