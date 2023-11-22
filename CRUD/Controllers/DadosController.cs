@@ -14,7 +14,7 @@ namespace CRUD.Controllers
         [HttpGet]
         public List<Customer> GetCustomer()
         {
-            return _customers.ToList();
+            return _customers.ToList(); 
         }
         [HttpPost]
         public bool InsertCustomer(Customer customer)
